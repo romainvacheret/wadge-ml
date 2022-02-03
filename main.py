@@ -31,3 +31,10 @@ model._make_knn(2)
 model._res_knn()
 model._print_score_matrice()
 model._print_knn_diagram()
+
+# TODO -> test main du DecisionTreeClassifier
+# model_dtree = ScoringRecipes_dtree(data=data, target=target, data_name=data_name)
+# model._make_dtree(2)
+# model._res_dtree()
+# model._print_score_matrice()
+# model._print_dtree_diagram()

@@ -92,3 +92,18 @@ class ScoringRecipes:
 # Ensuite prédire sur toutes les recettes en fonction de "? = ingrédients, notes, durée ..."
 
 # TODO -> k-means ou DecisionTree? lequel est le plus accurate
+
+# Faire une nouvelle classe pour dTree
+    # def _make_dtree(self):
+    #     self.recipes_dtree = tree.DecisionTreeClassifier()
+    #     self.recipes_dtree.fit(self.data_train, self.target_train)
+
+    # def _res_dtree(self):
+
+    #     # résultat sur la prédiction
+    #     self.result = self.recipes_dtree.predict(self.data_test)
+    #     self.matrice = confusion_matrix(self.result, self.target_test)
+    #     # score sur la matrice
+    #     self.accuracy = accuracy_score(self.result, self.target_test)
+    #     self.faux_pos = precision_score(self.result, self.target_test, average="macro")
+    #     self.faux_neg = recall_score(self.result, self.target_test, average="macro")
