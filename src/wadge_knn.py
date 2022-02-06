@@ -1,5 +1,3 @@
-from random import random
-from numpy import append
 from sklearn import neighbors
 from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score
 from sklearn.model_selection import train_test_split
@@ -8,7 +6,7 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 import pandas as pd
 
-class ScoringRecipes:
+class ScoringRecipesKnn:
     def __init__(self, data: list, target: dict, data_name: list):
         self.data = data
         self.target = target
@@ -25,7 +23,7 @@ class ScoringRecipes:
         self.faux_pos = 0
         self.cross_knn = []
 
-    def _make_knn(self, nb_knn: int):
+    def make_knn(self, nb_knn: int):
         data_frame = pd.DataFrame(self.data)
         self.data_train, self.data_test, self.target_train, self.target_test = train_test_split(data_frame, self.target, random_state=0, train_size=0.5)
 
@@ -34,7 +32,7 @@ class ScoringRecipes:
 
         self.recipes_knn.fit(self.data_train, self.target_train)
 
-    def _res_knn(self):
+    def res_knn(self):
         
         # résultat de la prédiction 
         self.result_knn = self.recipes_knn.predict(self.data_test)
@@ -43,16 +41,16 @@ class ScoringRecipes:
         self.cross_knn = cross_val_score(self.recipes_knn, self.data, self.target )
 
         # matrice de confusion
-        self.matrice = confusion_matrix(self.result, self.target_test)
+        self.matrice = confusion_matrix(self.result_knn, self.target_test)
 
         # score sur la matrice
-        self.accuracy = accuracy_score(self.result, self.target_test)
-        self.faux_pos = precision_score(self.result, self.target_test, average="macro")
-        self.faux_neg = recall_score(self.result, self.target_test, average="macro")
+        self.accuracy = accuracy_score(self.result_knn, self.target_test)
+        self.faux_pos = precision_score(self.result_knn, self.target_test, average="macro")
+        self.faux_neg = recall_score(self.result_knn, self.target_test, average="macro")
 
-    def _print_score_matrice(self):
+    def print_score_matrice(self):
 
-        print("Résultat : ", self.result)
+        print("Résultat : ", self.result_knn)
         print("Cross Validation : ", self.cross_knn)
 
         print("Accuracy : " + str(self.accuracy) + "\n" + "TPR : " + str(self.faux_pos) + "\n" + "FPR : " + str(self.faux_neg))
@@ -61,7 +59,7 @@ class ScoringRecipes:
         plt.ylabel('valeurs réelles')
         plt.savefig("conf_matrice.png")
 
-    def _print_knn_diagram(self):
+    def print_knn_diagram(self):
         fig = plt.figure()
         ax = fig.add_subplot(projection='3d')
 
@@ -93,17 +91,3 @@ class ScoringRecipes:
 
 # TODO -> k-means ou DecisionTree? lequel est le plus accurate
 
-# Faire une nouvelle classe pour dTree
-    # def _make_dtree(self):
-    #     self.recipes_dtree = tree.DecisionTreeClassifier()
-    #     self.recipes_dtree.fit(self.data_train, self.target_train)
-
-    # def _res_dtree(self):
-
-    #     # résultat sur la prédiction
-    #     self.result = self.recipes_dtree.predict(self.data_test)
-    #     self.matrice = confusion_matrix(self.result, self.target_test)
-    #     # score sur la matrice
-    #     self.accuracy = accuracy_score(self.result, self.target_test)
-    #     self.faux_pos = precision_score(self.result, self.target_test, average="macro")
-    #     self.faux_neg = recall_score(self.result, self.target_test, average="macro")
