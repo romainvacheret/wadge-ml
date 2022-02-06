@@ -7,10 +7,9 @@ from matplotlib import pyplot as plt
 import pandas as pd
 
 class ScoringRecipesKnn:
-    def __init__(self, data: list, target: dict, data_name: list):
+    def __init__(self, data: list, target: dict):
         self.data = data
         self.target = target
-        self.data_name = data_name
         self.recipes_knn = []
         self.data_train = []
         self.data_test = []
@@ -24,8 +23,8 @@ class ScoringRecipesKnn:
         self.cross_knn = []
 
     def make_knn(self, nb_knn: int):
-        data_frame = pd.DataFrame(self.data)
-        self.data_train, self.data_test, self.target_train, self.target_test = train_test_split(data_frame, self.target, random_state=0, train_size=0.5)
+        self.data_frame = pd.DataFrame(self.data)
+        self.data_train, self.data_test, self.target_train, self.target_test = train_test_split(self.data_frame, self.target, random_state=0, train_size=0.5)
 
         # KNN Model -> k neighbors
         self.recipes_knn = neighbors.KNeighborsClassifier(n_neighbors= nb_knn)
@@ -38,7 +37,7 @@ class ScoringRecipesKnn:
         self.result_knn = self.recipes_knn.predict(self.data_test)
 
         # cross validation
-        self.cross_knn = cross_val_score(self.recipes_knn, self.data, self.target )
+        self.cross_knn = cross_val_score(self.recipes_knn, self.data_frame, self.target )
 
         # matrice de confusion
         self.matrice = confusion_matrix(self.result_knn, self.target_test)
@@ -50,14 +49,14 @@ class ScoringRecipesKnn:
 
     def print_score_matrice(self):
 
-        print("Résultat : ", self.result_knn)
-        print("Cross Validation : ", self.cross_knn)
+        print("Résultat KNN: ", self.result_knn)
+        print("Cross Validation KNN: ", self.cross_knn)
 
-        print("Accuracy : " + str(self.accuracy) + "\n" + "TPR : " + str(self.faux_pos) + "\n" + "FPR : " + str(self.faux_neg))
+        print("Accuracy KNN: " + str(self.accuracy) + "\n" + "TPR KNN: " + str(self.faux_pos) + "\n" + "FPR KNN: " + str(self.faux_neg))
         sns.heatmap(self.matrice, square=True, annot=True, cbar=False)
         plt.xlabel('valeurs prédites')
         plt.ylabel('valeurs réelles')
-        plt.savefig("conf_matrice.png")
+        plt.savefig("conf_matrice_knn.png")
 
     def print_knn_diagram(self):
         fig = plt.figure()
@@ -81,7 +80,11 @@ class ScoringRecipesKnn:
         ax.set_ylabel('Person')
         ax.set_zlabel('Recipes')
         plt.grid()
-        plt.savefig("3d_dots_diagram")
+        plt.savefig("3d_dots_diagram_knn")
+
+        # graphe des plus proches voisins
+        # test = self.recipes_knn.kneighbors_graph(self.data_frame)
+        # print(test.toarray())
 
 
 
