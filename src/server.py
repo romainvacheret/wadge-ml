@@ -62,7 +62,7 @@ def foo(tuples: list[Tuple[int, int, int]],
 
 	user1_recipes = [t for t in tuples if t[0] == id]
 	user1_recipes_ids = [t[1] for t in user1_recipes] 
-	top_10 = sorted(user1_recipes, key= lambda x: x[-1])[:10] # Must be sure there are at least 10
+	top_10 = sorted(user1_recipes, key= lambda x: x[-1])[::-1][:10] # Must be sure there are at least 10
 	print(top_10)
 	top_10_idx = [tuples.index(t) for t in top_10]
 	top_10_clusters = [clusters[idx] for idx in top_10_idx]
